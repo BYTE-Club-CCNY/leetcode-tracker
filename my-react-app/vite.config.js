@@ -1,7 +1,10 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import { createVuePlugin } from 'vite-plugin-vue';
+import browserExtension from 'vite-plugin-browser-extension';
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
-})
+  plugins: [
+    createVuePlugin(),
+    browserExtension(),
+  ],
+});

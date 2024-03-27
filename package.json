@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "vite-plugin-browser-extension": "^0.0.4"
+  }
+}
