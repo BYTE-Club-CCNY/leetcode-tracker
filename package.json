@@ -1,5 +1,21 @@
 {
+  "name": "y",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./api/main"
+  },
+  "dependencies": {
+    "express": "4.19.2",
+    "dotenv": "16.4.5",
+    "cors": "2.8.5",
+    "cookie-parser": "1.4.6"
+  },
   "devDependencies": {
+    "nodemon": "3.1.0",
     "vite-plugin-browser-extension": "^0.0.4"
-  }
+  },
+  "author": "",
+  "license": "ISC"
 }
