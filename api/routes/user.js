@@ -9,7 +9,6 @@ const https = require('https');
 router.get('/', (req, res) => { //just about the users profile
     //req.query is looking at the query in the url string i.e. anything after the ? seperator like ?user=BVasquez07 
     const user = Object.values(req.query)[0] !== undefined ? decodeURIComponent(Object.values(req.query)[0]) : 'BVasquez07'; //grab the user from the query else just use my stats
-
     https.get(`https://alfa-leetcode-api.onrender.com/${user}`, (apiRes) => {
         console.log(user)
         const { statusCode } = apiRes;
@@ -33,14 +32,13 @@ router.get('/', (req, res) => { //just about the users profile
         }
 
         apiRes.setEncoding('utf8');
-        let rawData = [];
-        apiRes.on('data', (chunk) => { rawData.push(chunk); }); // grab data from the stream...
+        let rawData = ''; // stream in the data and hold it as a string
+        apiRes.on('data', (chunk) => { rawData += chunk; });
+        console.log(rawData)
         apiRes.on('end', () => {
             try {
-                let parsedData = rawData.join();
-                parsedData = JSON.parse(parsedData);
-                console.log(parsedData);
-                res.send({userData: parsedData});
+                parsedData = JSON.parse(rawData);
+                res.send({userInfo: parsedData});
             } catch (e) {
                 console.error(e.message);
             }
@@ -49,6 +47,7 @@ router.get('/', (req, res) => { //just about the users profile
 });
 
 router.get('/solved', (req, res) => { //user solved problems
+    const user = Object.values(req.query)[0] !== undefined ? decodeURIComponent(Object.values(req.query)[0]) : 'BVasquez07'; //grab the user from the query else just use my stats
     https.get(`https://alfa-leetcode-api.onrender.com/${user}/solved`, (apiRes) => {
         const { statusCode } = apiRes;
         const contentType = apiRes.headers['content-type'];
@@ -69,13 +68,12 @@ router.get('/solved', (req, res) => { //user solved problems
         }
 
         apiRes.setEncoding('utf8');
-        let rawData = [];
-        apiRes.on('data', (chunk) => { rawData.push(chunk); });
+        let rawData = ''; // stream in the data and hold it as a string
+        apiRes.on('data', (chunk) => { rawData += chunk; });
+        console.log(rawData)
         apiRes.on('end', () => {
             try {
-                let parsedData = rawData.join();
-                parsedData = JSON.parse(parsedData);
-                console.log(parsedData);
+                parsedData = JSON.parse(rawData);
                 res.send({userSolved: parsedData});
             } catch (e) {
                 console.error(e.message);
@@ -86,7 +84,9 @@ router.get('/solved', (req, res) => { //user solved problems
 })
 
 
-router.get('/submission', (req, res) => { //user solved problems
+router.get('/submission', (req, res) => { //user submissions
+    const user = Object.values(req.query)[0] !== undefined ? decodeURIComponent(Object.values(req.query)[0]) : 'BVasquez07'; //grab the user from the query else just use my stats
+    
     https.get(`https://alfa-leetcode-api.onrender.com/${user}/submission`, (apiRes) => {
         const { statusCode } = apiRes;
         const contentType = apiRes.headers['content-type'];
@@ -107,20 +107,18 @@ router.get('/submission', (req, res) => { //user solved problems
         }
 
         apiRes.setEncoding('utf8');
-        let rawData = [];
-        apiRes.on('data', (chunk) => { rawData.push(chunk); });
+        let rawData = '';
+        apiRes.on('data', (chunk) => { rawData += chunk; });
+        console.log(rawData)
         apiRes.on('end', () => {
             try {
-                let parsedData = rawData.join();
-                parsedData = JSON.parse(parsedData);
-                console.log(parsedData);
+                parsedData = JSON.parse(rawData);
                 res.send({userSubmitted: parsedData});
             } catch (e) {
                 console.error(e.message);
             }
         });
     }).on('error', (e) => {console.error(`There was an error: ${e.message}`);});
-    
 });
 
 module.exports = router;
