@@ -11,5 +11,11 @@
     "host_permissions": [
         "http://*/*",
         "https://*/*"
-    ]
+    ],
+    "icons": {
+        "16": "icon32.png",
+        "32": "icon32.png",
+        "48": "icon32.png",
+        "128":"icon32.png"
+    }
   }
