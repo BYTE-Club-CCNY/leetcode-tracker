@@ -1,6 +1,8 @@
 # Instructions
 
-To run the code must run following commands in terminal.
+If you want to read commit messages go to "2-setup-hello-world-extension" branch
+
+To run the code must run following commands in terminal...
 
 To install initial dependencies:
 npm install
