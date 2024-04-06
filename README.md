@@ -14,7 +14,7 @@ This commit adds the @types/chrome package as a devDependency and includes its d
 
 # Instructions
 
-If you want to read commit messages go to "2-setup-hello-world-extension" branch
+If you want to read commit messages go to "2-setup-hello-world-extension" branch.
 
 To run the code must run following commands in terminal...
 
