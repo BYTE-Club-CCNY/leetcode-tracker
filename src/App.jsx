@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import supabase from './supabaseClient'
 import './App.css'
+import Signup from './components/auth/signup';
 
 function App() {
 
@@ -8,6 +9,7 @@ function App() {
   
   return (
     <>
+    <Signup />
     </>
   )
 }
