@@ -1,15 +1,13 @@
-import { useState, useEffect } from 'react'
-import supabase from './supabaseClient'
-import './App.css'
+import * as React from 'react';
+import { Router } from 'react-chrome-extension-router'; 
+import Landing from './pages/landing';
 
-function App() {
-
-  const [userLeet, setUserLeet] = useState([]);
-  
+const App = () => {
   return (
-    <>
-    </>
-  )
-}
+    <Router>
+      <Landing />
+    </Router>
+  );
+};
 
-export default App
+export default App;
