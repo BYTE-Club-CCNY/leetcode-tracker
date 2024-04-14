@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Login from './login'
 import { Link } from 'react-chrome-extension-router';
+import supabase from '../supabaseClient';
 
 const SignUp = () => {
 
@@ -10,7 +11,7 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
   });
-
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -21,9 +22,21 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Implement form submission
-    console.log("submit", formData)
+
+    //insert user data to auth.Users table
+    const {data, error} = await supabase.auth.signUp({
+      email: formData.email,
+      password: formData.password
+    });
     
+    if(error) {
+      //exceptions returned by error.message includes existing accounts, invalid format for password (at least 6 char) and email
+      console.log(error.message);
+    }
+    else {
+      //response object contains information about user session (access and refresh token) both are automatically stored in local storage by supabase client
+      console.log(data);
+    }
   };
   
   return (
