@@ -12,6 +12,11 @@ const Login = () => {
     confirmPassword: "",
   });
 
+  const[invalidCredentials, setCredentials] = useState({
+    failedLogin: false,
+    failedMessage: '',
+  });
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -30,12 +35,19 @@ const Login = () => {
     })
 
     if (error) {
-      //Only exception includes invalid credentials for non existing accounts
-      console.log(error.message);
+      setCredentials({
+        failedLogin: true,
+        failedMessage: error.message,
+      });
     }
     else {
+      if (invalidCredentials.failedLogin) {
+        setCredentials({
+          failedLogin: false,
+          failedMessage: '',
+        })
+      }
       console.log("Successful login");
-      //response object contains information about user session (access and refresh token) both are automatically stored in local storage by supabase client
       console.log(data);
     }
     
@@ -78,6 +90,7 @@ const Login = () => {
           <p className="font-bold text-base md:text-xl">Log In</p>
         </button>
         <div className="text-base mt-3 font-light">Don't have an account? <Link component={SignUp} className="text-customAccent hover:text-customMain font-semibold">Sign Up</Link></div>
+        {invalidCredentials.failedLogin && <div className="mt-2 bg-red-500 px-2 py-2 rounded text-gray-100">{invalidCredentials.failedMessage + ": email or password is incorrect"}</div>}
       </div>
     </div>
   )

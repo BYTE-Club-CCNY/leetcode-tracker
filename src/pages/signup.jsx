@@ -11,6 +11,11 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
   });
+
+  const[failedReqs, setReqs] = useState({
+    failedSignUp: false,
+    failedMessage: '',
+  });
   
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -30,11 +35,19 @@ const SignUp = () => {
     });
     
     if(error) {
-      //exceptions returned by error.message includes existing accounts, invalid format for password (at least 6 char) and email
-      console.log(error.message);
+      setReqs({
+        failedSignUp: true,
+        failedMessage: error.message,
+      });
     }
     else {
-      //response object contains information about user session (access and refresh token) both are automatically stored in local storage by supabase client
+      if (failedReqs.failedSignUp) {
+        setReqs({
+          failedSignUp: false, 
+          failedMessage: '',
+        });
+      }
+      console.log("Successfull sign up");
       console.log(data);
     }
   };
@@ -102,6 +115,7 @@ const SignUp = () => {
           <p className="font-bold text-base md:text-xl">Sign Up</p>
         </button>
         <div className="text-base mt-3 font-light">Already have an account? <Link component={Login} className="text-customAccent hover:text-customMain font-semibold">Log In</Link></div>
+        {failedReqs.failedSignUp && <div className="mt-2 bg-red-500 px-2 py-2 rounded text-gray-100">{failedReqs.failedMessage}</div>}
       </div>
     </div>
   )
