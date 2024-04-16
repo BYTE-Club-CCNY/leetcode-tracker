@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { Link } from 'react-chrome-extension-router';
+import { Link, goTo, goBack } from 'react-chrome-extension-router';
 import SignUp from "./signup";
+import Home from "./home";
 import supabase from '../supabaseClient';
 
 const Login = () => {
@@ -25,7 +26,7 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => { //maybe switch to using useEffect here since we have external dependencies
     e.preventDefault();
     // TODO: Implement form submission
 
@@ -41,14 +42,17 @@ const Login = () => {
       });
     }
     else {
-      if (invalidCredentials.failedLogin) {
+      if (invalidCredentials.failedLogin) { //resetting the invalid creds state
         setCredentials({
           failedLogin: false,
           failedMessage: '',
         })
       }
-      console.log("Successful login");
-      console.log(data);
+      
+      const user = await supabase.auth.getUserIdentities();
+      const leetUser = user.data.identities[0].identity_data.leetcodeUser;
+      console.log(leetUser)
+      goTo(Home, {leetUser});
     }
     
   };

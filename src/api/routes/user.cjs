@@ -6,6 +6,8 @@ const https = require('https');
 //this route makes use of the leetcode api built by Arghya Das et al which could be found at https://github.com/alfaArghya/alfa-leetcode-api
 //there is a rate limit so be careful since nodemon is running and also 
 
+//To Do, change the req.query to body so that it is easier to fetch from the endpoint.
+
 router.get('/', (req, res) => { //just about the users profile
     //req.query is looking at the query in the url string i.e. anything after the ? seperator like ?user=BVasquez07 
     const user = Object.values(req.query)[0] !== undefined ? decodeURIComponent(Object.values(req.query)[0]) : 'BVasquez07'; //grab the user from the query else just use my stats

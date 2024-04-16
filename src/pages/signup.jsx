@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Login from './login'
-import { Link } from 'react-chrome-extension-router';
+import Home from './home';
+import { Link, goTo } from 'react-chrome-extension-router';
 import supabase from '../supabaseClient';
 
 const SignUp = () => {
@@ -31,7 +32,12 @@ const SignUp = () => {
     //insert user data to auth.Users table
     const {data, error} = await supabase.auth.signUp({
       email: formData.email,
-      password: formData.password
+      password: formData.password,
+      options:{
+        data:{
+          leetcodeUser: formData.leetcodeUser,
+        }
+      }
     });
     
     if(error) {
@@ -47,8 +53,10 @@ const SignUp = () => {
           failedMessage: '',
         });
       }
-      console.log("Successfull sign up");
-      console.log(data);
+
+      const user = await supabase.auth.getUserIdentities();
+      const leetUser = user.data.identities[0].identity_data.leetcodeUser;
+      goTo(Home, {leetUser});
     }
   };
   
