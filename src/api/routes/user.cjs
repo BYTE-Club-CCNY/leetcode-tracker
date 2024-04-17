@@ -40,7 +40,7 @@ router.get('/', (req, res) => { //just about the users profile
         apiRes.on('end', () => {
             try {
                 parsedData = JSON.parse(rawData);
-                res.send({userInfo: parsedData});
+                res.send({data: parsedData});
             } catch (e) {
                 console.error(e.message);
             }
@@ -76,7 +76,7 @@ router.get('/solved', (req, res) => { //user solved problems
         apiRes.on('end', () => {
             try {
                 parsedData = JSON.parse(rawData);
-                res.send({userSolved: parsedData});
+                res.send({data: parsedData});
             } catch (e) {
                 console.error(e.message);
             }
@@ -115,7 +115,7 @@ router.get('/submission', (req, res) => { //user submissions
         apiRes.on('end', () => {
             try {
                 parsedData = JSON.parse(rawData);
-                res.send({userSubmitted: parsedData});
+                res.send({data: parsedData});
             } catch (e) {
                 console.error(e.message);
             }

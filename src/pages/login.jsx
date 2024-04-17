@@ -51,7 +51,6 @@ const Login = () => {
       
       const user = await supabase.auth.getUserIdentities();
       const leetUser = user.data.identities[0].identity_data.leetcodeUser;
-      console.log(leetUser)
       goTo(Home, {leetUser});
     }
     
