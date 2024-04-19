@@ -48,9 +48,8 @@ const Login = () => {
           failedMessage: '',
         })
       }
-      
-      const user = await supabase.auth.getUserIdentities();
-      const leetUser = user.data.identities[0].identity_data.leetcodeUser;
+
+      let leetUser = data.user.user_metadata.leetcodeUser;
       goTo(Home, {leetUser});
     }
     
