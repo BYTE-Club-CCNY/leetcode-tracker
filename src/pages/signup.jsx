@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import Login from './login'
-import { Link } from 'react-chrome-extension-router';
+import Home from './home';
+import { Link, goTo } from 'react-chrome-extension-router';
+import supabase from '../supabaseClient';
 
 const SignUp = () => {
 
@@ -11,6 +13,11 @@ const SignUp = () => {
     confirmPassword: "",
   });
 
+  const[failedReqs, setReqs] = useState({
+    failedSignUp: false,
+    failedMessage: '',
+  });
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -21,9 +28,35 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Implement form submission
-    console.log("submit", formData)
+
+    //insert user data to auth.Users table
+    const {data, error} = await supabase.auth.signUp({
+      email: formData.email,
+      password: formData.password,
+      options:{
+        data:{
+          leetcodeUser: formData.leetcodeUser,
+        }
+      }
+    });
     
+    if(error) {
+      setReqs({
+        failedSignUp: true,
+        failedMessage: error.message,
+      });
+    }
+    else {
+      if (failedReqs.failedSignUp) {
+        setReqs({
+          failedSignUp: false, 
+          failedMessage: '',
+        });
+      }
+
+      let leetUser = data.user.user_metadata.leetcodeUser;
+      goTo(Home, {leetUser});
+    }
   };
   
   return (
@@ -89,6 +122,7 @@ const SignUp = () => {
           <p className="font-bold text-base md:text-xl">Sign Up</p>
         </button>
         <div className="text-base mt-3 font-light">Already have an account? <Link component={Login} className="text-customAccent hover:text-customMain font-semibold">Log In</Link></div>
+        {failedReqs.failedSignUp && <div className="mt-2 bg-red-500 px-2 py-2 rounded text-gray-100">{failedReqs.failedMessage}</div>}
       </div>
     </div>
   )

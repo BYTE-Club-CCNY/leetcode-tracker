@@ -1,6 +1,8 @@
 import { useState } from 'react'
-import { Link } from 'react-chrome-extension-router';
+import { Link, goTo, goBack } from 'react-chrome-extension-router';
 import SignUp from "./signup";
+import Home from "./home";
+import supabase from '../supabaseClient';
 
 const Login = () => {
 
@@ -11,6 +13,11 @@ const Login = () => {
     confirmPassword: "",
   });
 
+  const[invalidCredentials, setCredentials] = useState({
+    failedLogin: false,
+    failedMessage: '',
+  });
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -19,10 +26,32 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => { //maybe switch to using useEffect here since we have external dependencies
     e.preventDefault();
     // TODO: Implement form submission
-    console.log("submit", formData)
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: formData.email,
+      password: formData.password,
+    })
+
+    if (error) {
+      setCredentials({
+        failedLogin: true,
+        failedMessage: error.message,
+      });
+    }
+    else {
+      if (invalidCredentials.failedLogin) { //resetting the invalid creds state
+        setCredentials({
+          failedLogin: false,
+          failedMessage: '',
+        })
+      }
+
+      let leetUser = data.user.user_metadata.leetcodeUser;
+      goTo(Home, {leetUser});
+    }
     
   };
   
@@ -63,6 +92,7 @@ const Login = () => {
           <p className="font-bold text-base md:text-xl">Log In</p>
         </button>
         <div className="text-base mt-3 font-light">Don't have an account? <Link component={SignUp} className="text-customAccent hover:text-customMain font-semibold">Sign Up</Link></div>
+        {invalidCredentials.failedLogin && <div className="mt-2 bg-red-500 px-2 py-2 rounded text-gray-100">{invalidCredentials.failedMessage + ": email or password is incorrect"}</div>}
       </div>
     </div>
   )

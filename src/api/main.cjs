@@ -15,7 +15,7 @@ app.use(cookieParser());
 
 
 app.get('/', (req, res) => { // render a simple hello on landing
-    res.send('<h1><center>Hello World!</center><h1>')
+    res.json({data: 'welcome to the endpoint that interacts with the leetcode api!'});
 });
 
 app.use('/user', userRoute);
