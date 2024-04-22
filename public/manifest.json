@@ -18,5 +18,16 @@
         "32": "icon32.png",
         "48": "icon32.png",
         "128":"icon32.png"
-    }
-  }
+    },
+    "content_scripts": [
+        {
+        "matches": [
+            "https://leetcode.com/*"
+        ],
+        "js": [
+            "./scripts/leetcode.js"
+        ],
+        "run_at": "document_idle"
+        }
+    ]
+}
