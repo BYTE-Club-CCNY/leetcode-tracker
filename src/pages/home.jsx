@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react';
+import supabase from '../supabaseClient';
+import { goTo } from 'react-chrome-extension-router';
+import Login from './login';
 
 const Home = ({leetUser}) => {
   const endpoints = {
@@ -8,19 +11,6 @@ const Home = ({leetUser}) => {
     submission: `http://127.0.0.1:3060/user?user=${leetUser}/submission`
   }
   const [userData, setUserData] = useState([]);
-  /*
-  use this to get more of the user's detail like session data and stuff or a lot of it could be passed in as a prop from login or signup!
-  const [user, setUser] = useState(null);
-
-  useEffect (() => {
-    (async () => {
-      const user = await supabase.auth.getUserIdentities();
-      const leetUser = user.data.identities[0].identity_data.leetcodeUser;
-      console.log(leetUser)
-      setUser(leetUser);
-    })();
-  }, []);
-  */
  
   const fetchApi = (url) => {
     useEffect (() => {
@@ -33,10 +23,15 @@ const Home = ({leetUser}) => {
 
   fetchApi(endpoints.root); // call the endpoint url you desire
 
-  //each of the routes will have to be handled properly when rendering below.
+  const handleLogout = () => { //handle logout in the homepage since there will probably be a navbar or something
+    supabase.auth.signOut(); //signout globally from all tabs and windows.
+    goTo(Login);
+  };
+
   return (
     <div className="w-[250px] h-[100px] bg-customBG">
-      This is the home page, welcome {leetUser}, it's nice to have you!
+      This is the home page, welcome {leetUser}, it's nice to have you!<br/><br/>
+      <button className='logoutButton' onClick={handleLogout} style={{color: 'Red', background:"pink"}}>Logout</button>{/*for testing only...*/}
       {userData.map(data => data)}
     </div>
   )

@@ -1,6 +1,7 @@
 import SignUp from './signup'
 import { Link } from 'react-chrome-extension-router';
 
+
 const Landing = () => {
   return (
     <div className="w-[250px] h-[100px] bg-customBG flex flex-col justify-center items-center">
