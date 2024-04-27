@@ -3,6 +3,7 @@ import Login from './login'
 import Home from './home';
 import { Link, goTo } from 'react-chrome-extension-router';
 import supabase from '../supabaseClient';
+import { storeUserSession, retrieveUserSession } from '../UserSession';
 
 const SignUp = () => {
 
@@ -53,6 +54,9 @@ const SignUp = () => {
           failedMessage: '',
         });
       }
+      
+      retrieveUserSession();
+      storeUserSession(data.session);
 
       let leetUser = data.user.user_metadata.leetcodeUser;
       goTo(Home, {leetUser});

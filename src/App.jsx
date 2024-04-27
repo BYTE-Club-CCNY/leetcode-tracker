@@ -5,7 +5,7 @@ import Landing from './pages/landing';
 const App = () => {
   return (
     <Router>
-      <Landing />
+        <Landing />
     </Router>
   );
 };
