@@ -1,4 +1,3 @@
-
 const listener = () => {
   console.log('submit button clicked');
   const successTag = document.getElementsByClassName('success__3Ai7');
@@ -11,33 +10,43 @@ const listener = () => {
       console.log("failed to submit successfully");
     }
   }, 10000);
-
-
 }
 
 // Use MutationObserver to determine when the submit button elements are loaded
 const observer = new MutationObserver(function (_mutations, observer) {
   const v1SubmitBtn = document.querySelector('[data-cy="submit-code-btn"]');
-  // const v2SubmitBtn = document.querySelector('[data-e2e-locator="console-submit-button"]');
+  const v2SubmitBtn = document.querySelector('[data-e2e-locator="console-submit-button"]');
+  const textareaList = document.getElementsByTagName('textarea');
+  const textarea = textareaList.length === 4 ? textareaList[2] : (textareaList.length === 2 ? textareaList[0] : textareaList[1]);
+
   if (v1SubmitBtn) {
     observer.disconnect();
-
     v1SubmitBtn.addEventListener('click', () => listener());
     return;
   }
 
-  // if(v2SubmitBtn && textarea) {
-  //   observer.disconnect();
-
-  //   const leetCode = new LeetCodeV2();
-  //   v2SubmitBtn.addEventListener('click', () => loader(leetCode));
-  //   textarea.addEventListener('keydown', e => submitByShortcuts(e, leetCode));
-  //   leetCode.addManualSubmitButton();
-  // }
+  if (v2SubmitBtn && textarea) {
+    observer.disconnect();
+    v2SubmitBtn.addEventListener('click', () => {
+      listener();
+      checkSubmissionStatus();
+    });
+    return;
+  }
 });
-setTimeout(() => {
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true,
-  });
-}, 2000);
+
+// Function to check submission status every second for 10 seconds
+const checkSubmissionStatus = () => {
+  let attempts = 0;
+  const interval = setInterval(() => {
+    attempts++;
+    const successTag = document.getElementsByClassName('success__3Ai7');
+    if (successTag.length > 0) {
+      console.log("Submitted successfully");
+      clearInterval(interval);
+    } else if (attempts >= 10) {
+      console.log("Failed to submit successfully after 10 attempts");
+      clearInterval(interval);
+    }
+  }, 1000);
+};
