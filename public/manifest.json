@@ -2,7 +2,6 @@
     "manifest_version": 3,
     "name": "TrackLeet",
     "version": "1.0.0",
-
     "permissions": [
         "scripting",
         "storage"
@@ -27,5 +26,8 @@
         ],
         "run_at": "document_idle"
         }
-    ]
+    ],
+    "action": {
+        "default_popup": "index.html"
+    }
 }
