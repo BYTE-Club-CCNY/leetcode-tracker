@@ -2,12 +2,19 @@ import { goTo } from 'react-chrome-extension-router';
 import Home from './pages/home';
 import Settings from './pages/settings';
 import History from './pages/history';
-import Landing from './pages/landing';
+import Login from './pages/login'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear, faArrowRightFromBracket, faBars } from '@fortawesome/free-solid-svg-icons';
+import supabase from './supabaseClient';
 
 
 const Header = () => {
+
+  function handleLogOut() {
+    supabase.auth.signOut();
+    goTo(Login);
+  }
+
     return (
         <div className="w-full h-1/6 bg-customDark">
         <div className="flex justify-between h-full">
@@ -24,7 +31,7 @@ const Header = () => {
               Settings
             </div>
             <div>
-            <FontAwesomeIcon onClick = {() => { goTo(Landing); }} icon={faArrowRightFromBracket} className="mr-1 cursor-pointer"/>
+            <FontAwesomeIcon onClick = {() => { handleLogOut() }} icon={faArrowRightFromBracket} className="mr-1 cursor-pointer"/>
               Log Out
             </div>
           </div>
