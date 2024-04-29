@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faArrowsRotate } from '@fortawesome/free-solid-svg-icons';
 import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import Header from '../header';
+import Header from '../components/header';
 
 const Home = ({leetUser}) => {
   // const endpoints = {
@@ -80,7 +80,7 @@ const Home = ({leetUser}) => {
   return (
     <div className="w-[600px] h-[300px] bg-customBG rounded-lg">
       <Header />
-      <div className="w-full h-5/6 flex justify-center items-center gap-10">
+      <div className="w-full h-5/6 flex justify-center items-center gap-4">
         <div style={{ width:200, height:200 }}>
         <CircularProgressbarWithChildren 
           value={remainingTime} 
@@ -108,7 +108,7 @@ const Home = ({leetUser}) => {
           </div>
         </CircularProgressbarWithChildren>
         </div>
-        <textarea placeholder="Type your notes here..." className="w-[350px] h-[200px] resize-none text-gray-500 rounded-lg overflow-auto"/>
+        <textarea placeholder="Type your notes here..." className="w-[350px] h-[200px] resize-none text-gray-500 rounded-lg overflow-auto p-2"/>
       </div>
     </div>
   )
