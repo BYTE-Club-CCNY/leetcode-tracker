@@ -3,6 +3,7 @@ import { Link, goTo, goBack } from 'react-chrome-extension-router';
 import SignUp from "./signup";
 import Home from "./home";
 import supabase from '../supabaseClient';
+import { storeUserSession, retrieveUserSession } from '../UserSession';
 
 const Login = () => {
 
@@ -26,7 +27,7 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = async (e) => { //maybe switch to using useEffect here since we have external dependencies
+  const handleSubmit = async (e) => { 
     e.preventDefault();
     // TODO: Implement form submission
 
@@ -48,6 +49,8 @@ const Login = () => {
           failedMessage: '',
         })
       }
+
+      retrieveUserSession();
 
       let leetUser = data.user.user_metadata.leetcodeUser;
       goTo(Home, {leetUser});
