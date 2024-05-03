@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faArrowsRotate } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faArrowsRotate, faPause } from '@fortawesome/free-solid-svg-icons';
 import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import Header from '../components/header';
@@ -46,7 +46,7 @@ const Home = ({leetUser}) => {
   const timerStartedRef = useRef(false);
   const intervalID = useRef();
   const [remainingTime, setTime] = useState(3600);
-  const [displayPlayButton, setPlayButton] = useState(true);
+  const [togglePlayButton, setPlayButton] = useState(true);
 
   function startTimer() {
     intervalID.current = setInterval(() => {
@@ -88,23 +88,42 @@ const Home = ({leetUser}) => {
           minValue={0} 
           maxValue={3600} 
           styles={buildStyles({ textColor:'#274156', pathColor:'#274156' })}
+          counterClockwise={true}
         >
           <div className="flex justify-center items-center gap-5">
             {
-              !displayPlayButton ?
-              ''
-              :
-              <FontAwesomeIcon onClick={() => {
+              togglePlayButton ?
+              <FontAwesomeIcon 
+              onClick={() => {
                 //when the timer starts we remove the play button state and update the current property of timerStartedRef to true such that the interval function can run in useEffect
                 setPlayButton(false);
-                timerStartedRef.current = true;
-              }} style={{marginTop:"60px"}} icon={faPlay} className="cursor-pointer"/>
+                timerStartedRef.current=true;
+              }} 
+              style={{marginTop:"60px"}} 
+              icon={faPlay} 
+              className="cursor-pointer"
+              />
+              :
+              <FontAwesomeIcon 
+              onClick={() => {
+                setPlayButton(true);
+                timerStartedRef.current=false;
+              }}
+              style={{marginTop:"60px"}} 
+              icon={faPause} 
+              className="cursor-pointer"
+              />
             }
-              <FontAwesomeIcon onClick={() => {
-                //restart the timer by updating the remainingTime state back to 3600 seconds (1 hour) and update timerStartedRef.current to true to restart the interval count down again
-                setTime(3600);
-                timerStartedRef.current = true;
-                }} style={{marginTop:"60px"}} icon={faArrowsRotate} className="cursor-pointer"/>
+              <FontAwesomeIcon 
+              onClick={() => {
+                  //restart the timer by updating the remainingTime state back to 3600 seconds (1 hour) and update timerStartedRef.current to true to restart the interval count down again
+                  setTime(3600);
+                  timerStartedRef.current = true;
+                }} 
+                style={{marginTop:"60px"}} 
+                icon={faArrowsRotate} 
+                className="cursor-pointer"
+                />
           </div>
         </CircularProgressbarWithChildren>
         </div>
