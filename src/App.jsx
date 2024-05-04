@@ -5,6 +5,7 @@ import Home from './pages/home';
 import supabase from './supabaseClient';
 import { useEffect, useState } from 'react';
 
+
 const App = () => {
   const [session, setSession] = useState(null);
   

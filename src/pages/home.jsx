@@ -6,42 +6,6 @@ import 'react-circular-progressbar/dist/styles.css';
 import Header from '../components/header';
 
 const Home = ({leetUser}) => {
-  // const endpoints = {
-
-  //   root: `http://127.0.0.1:3060/`,
-  //   profile_info: `http://127.0.0.1:3060/user?user=${leetUser}`,
-  //   solved: `http://127.0.0.1:3060/user?user=${leetUser}/solved`,
-  //   submission: `http://127.0.0.1:3060/user?user=${leetUser}/submission`
-  // }
-  // const [userData, setUserData] = useState([]);
-  // /*
-  // use this to get more of the user's detail like session data and stuff or a lot of it could be passed in as a prop from login or signup!
-  // const [user, setUser] = useState(null);
-
-  // useEffect (() => {
-  //   (async () => {
-  //     const user = await supabase.auth.getUserIdentities();
-  //     const leetUser = user.data.identities[0].identity_data.leetcodeUser;
-  //     console.log(leetUser)
-  //     setUser(leetUser);
-  //   })();
-  // }, []);
-  // */
- 
-  // const fetchApi = (url) => {
-  //   useEffect (() => {
-    
-  //     fetch(url)
-  //       .then(res => res.json())
-  //       .then(data => setUserData([data.data]))
-  //       .catch(err => console.error(`There was an error ${err}`));
-
-  //   }, []) // rerender on any change for now
-  // };
-
-  // fetchApi(endpoints.root); // call the endpoint url you desire
-
-  //each of the routes will have to be handled properly when rendering below.
   
   const timerStartedRef = useRef(false);
   const intervalID = useRef();
@@ -76,9 +40,11 @@ const Home = ({leetUser}) => {
 
   const minutes = Math.floor(remainingTime / 60); 
   const seconds = Math.floor(remainingTime % 60); 
+  // change the color of the path and text for the proress bar
+  const progBarColors = localStorage.getItem('mode') === 'dark' ? "#8134DF" : "#274156" 
 
   return (
-    <div className="w-[600px] h-[300px] bg-customBG rounded-lg">
+    <div className="w-[600px] h-[300px] bg-customBG dark:bg-customDarkBG">
       <Header />
       <div className="w-full h-5/6 flex justify-center items-center gap-4">
         <div style={{ width:200, height:200 }}>
@@ -87,7 +53,7 @@ const Home = ({leetUser}) => {
           text={remainingTime === 3600 || seconds === 0 ? `${minutes}:${seconds}0` : `${minutes}:${seconds}`} 
           minValue={0} 
           maxValue={3600} 
-          styles={buildStyles({ textColor:'#274156', pathColor:'#274156' })}
+          styles={buildStyles({textColor: progBarColors, pathColor:progBarColors})}
           counterClockwise={true}
         >
           <div className="flex justify-center items-center gap-5">
@@ -127,7 +93,7 @@ const Home = ({leetUser}) => {
           </div>
         </CircularProgressbarWithChildren>
         </div>
-        <textarea placeholder="Type your notes here..." className="w-[350px] h-[200px] resize-none text-gray-500 rounded-lg overflow-auto p-2"/>
+        <textarea placeholder="Type your notes here..." className="w-[350px] h-[200px] resize-none text-gray-500 rounded-lg overflow-auto p-2 dark:bg-customDarkAccent"/>
       </div>
     </div>
   )

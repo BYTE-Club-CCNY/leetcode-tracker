@@ -4,6 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'selector',
   theme: {
     extend: {
       colors: {
@@ -11,6 +12,8 @@ export default {
         'customMain': '#1C6E8C',
         'customDark': '#274156',
         'customAccent': '#8134DF',
+        'customDarkBG': '#1d1c1e',
+        'customDarkAccent':'#2e2d30'
       },
     },
   },
