@@ -13,7 +13,8 @@ export default {
         'customDark': '#274156',
         'customAccent': '#8134DF',
         'customDarkBG': '#1d1c1e',
-        'customDarkAccent':'#2e2d30'
+        'customDarkAccent': '#2e2d30',
+        'customDarkMain': '#00A3C4'
       },
     },
   },

@@ -41,7 +41,8 @@ const Home = ({leetUser}) => {
   const minutes = Math.floor(remainingTime / 60); 
   const seconds = Math.floor(remainingTime % 60); 
   // change the color of the path and text for the proress bar
-  const progBarColors = localStorage.getItem('mode') === 'dark' ? "#8134DF" : "#274156" 
+  const progBarColors = localStorage.getItem('mode') === 'dark' ? "00A3C4" : "#274156";
+  const iconColor = progBarColors;
 
   return (
     <div className="w-[600px] h-[300px] bg-customBG dark:bg-customDarkBG">
@@ -65,7 +66,7 @@ const Home = ({leetUser}) => {
                 setPlayButton(false);
                 timerStartedRef.current=true;
               }} 
-              style={{marginTop:"60px"}} 
+              style={{marginTop:"60px", color:`${iconColor}`}} 
               icon={faPlay} 
               className="cursor-pointer"
               />
@@ -86,14 +87,14 @@ const Home = ({leetUser}) => {
                   setTime(3600);
                   timerStartedRef.current = true;
                 }} 
-                style={{marginTop:"60px"}} 
+                style={{marginTop:"60px", color:`${iconColor}`}} 
                 icon={faArrowsRotate} 
                 className="cursor-pointer"
                 />
           </div>
         </CircularProgressbarWithChildren>
         </div>
-        <textarea placeholder="Type your notes here..." className="w-[350px] h-[200px] resize-none text-gray-500 rounded-lg overflow-auto p-2 dark:bg-customDarkAccent"/>
+        <textarea placeholder="Type your notes here..." className="w-[350px] h-[200px] resize-none text-gray-500 dark:text-gray-300 rounded-lg overflow-auto p-2 dark:bg-customDarkAccent"/>
       </div>
     </div>
   )
