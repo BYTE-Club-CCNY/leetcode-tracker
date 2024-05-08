@@ -1,5 +1,4 @@
 import SignUp from './signup'
-import Home from './home';
 import { Link } from 'react-chrome-extension-router';
 
 

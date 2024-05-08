@@ -16,12 +16,12 @@ const Header = () => {
   }
 
     return (
-        <div className="w-full h-1/6 bg-customDark">
+      <div className="w-full h-1/6 bg-customDark dark:bg-customDarkAccent">
         <div className="flex justify-between h-full items-center p-2">
-          <div onClick={()=>{ goTo(Home); }} className="text-customBG text-4xl font-bold cursor-pointer">
+          <div onClick={()=>{ goTo(Home); }} className="text-customBG dark:text-customDarkMain text-4xl font-bold cursor-pointer">
             TrackLeet
           </div>
-          <div className="flex gap-6 text-customBG text-lg items-center">
+          <div className="flex gap-6 text-customBG dark:text-customDarkMain text-lg items-center">
             <div onClick= {()=>{ goTo(History); } } className="cursor-pointer">
             <FontAwesomeIcon icon={faBars} className="mr-1"/>
               History
