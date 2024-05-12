@@ -18,11 +18,21 @@ const observer = new MutationObserver(function (_mutations, observer) {
 
 // Function to check submission status every second for 10 seconds
 const listener = () => {
-  console.log('submit button clicked');
 
   // TODO: when submit is successful, store that in DB 
-  checkSubmissionStatus().then(success => {
+  checkSubmissionStatus().then(async success => {
     if (success) {
+      let questionName = getQuestionName();
+      console.log("qwuestion name", questionName);
+      chrome.storage.local.get(['submissions'], (result) => {
+        let submissions = result.submissions || [];
+        submissions.push({
+          question: questionName,
+          timestamp: new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })
+        });
+        chrome.storage.local.set({ 'submissions': submissions });
+      });
+
       console.log('submission successful');
     } else {
       console.log('submission failed');
@@ -55,3 +65,9 @@ setTimeout(() => {
     subtree: true,
   });
 }, 2000);
+
+// Function to get the question name
+const getQuestionName = () => {
+  const questionName = document.querySelector('[data-cy="question-title"]').textContent;
+  return questionName
+};

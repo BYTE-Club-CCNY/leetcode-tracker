@@ -5,6 +5,8 @@ import supabase from '../supabaseClient';
 const History = () => {
     const [userData, setUserData] = useState([]);
     const [user, setUser] = useState(null);
+    const [submissions, setSubmissions] = useState([]);
+
     const endpoints = {
         root: `http://127.0.0.1:3060/`,
         profile_info: `http://127.0.0.1:3060/user?user=${user}`,
@@ -18,6 +20,14 @@ const History = () => {
           const leetUser = data.session.user.user_metadata.leetcodeUser;
           setUser(leetUser);
         })();
+    }, []);
+
+    useEffect(() => {
+        chrome.storage.local.get(['submissions']).then((result) => {
+            console.log(result)
+            if (result.submissions)
+                setSubmissions(result.submissions);
+        });
     }, []);
 
     // const fetchApi = (url) => {
@@ -36,10 +46,17 @@ const History = () => {
     return (
         <div className="w-[600px] h-[300px] bg-customBG dark:bg-customDarkBG">
             <Header />
-            <div className="w-full h-5/6 flex justify-center items-center">
-                <h3 className='text-customDark dark:text-customBG'>
-                    Welcome to the temporary history page {user}
+            <div className="w-full flex justify-center">
+                <h3 className='text-3xl text-customDark dark:text-customBG'>
+                    History Page for {user}
                 </h3>
+            </div>
+            <div className="text-xl flex flex-col gap-3">
+                {submissions.map((submission, index) => (
+                    <div key={index}>
+                        {submission.question} - {submission.timestamp}
+                    </div>
+                ))}
             </div>
         </div>
     )
