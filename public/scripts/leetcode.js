@@ -1,4 +1,3 @@
-// Use MutationObserver to determine when the submit button elements are loaded
 const observer = new MutationObserver(function (_mutations, observer) {
   const v1SubmitBtn = document.querySelector('[data-cy="submit-code-btn"]');
   const v2SubmitBtn = document.querySelector('[data-e2e-locator="console-submit-button"]');
@@ -18,22 +17,22 @@ const observer = new MutationObserver(function (_mutations, observer) {
 
 // Function to check submission status every second for 10 seconds
 const listener = () => {
-
+  console.log("1")
   // TODO: when submit is successful, store that in DB 
   checkSubmissionStatus().then(async success => {
     if (success) {
-      let questionName = getQuestionName();
-      console.log("qwuestion name", questionName);
-      chrome.storage.local.get(['submissions'], (result) => {
-        let submissions = result.submissions || [];
-        submissions.push({
-          question: questionName,
-          timestamp: new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })
-        });
-        chrome.storage.local.set({ 'submissions': submissions });
+      let problemName = getProblemName();
+      console.log("question name: ", problemName);
+      chrome.runtime.sendMessage({
+        message: 'saveSubmission',
+        payload: {
+          problem_name: problemName,
+          problem_difficulty: 'easy',
+          successful: true,
+        },
+      }, (response) => {
+        console.log(response.message);
       });
-
-      console.log('submission successful');
     } else {
       console.log('submission failed');
     }
@@ -67,7 +66,7 @@ setTimeout(() => {
 }, 2000);
 
 // Function to get the question name
-const getQuestionName = () => {
-  const questionName = document.querySelector('[data-cy="question-title"]').textContent;
-  return questionName
+const getProblemName = () => {
+  const problemName = document.querySelector('[data-cy="question-title"]').textContent;
+  return problemName
 };

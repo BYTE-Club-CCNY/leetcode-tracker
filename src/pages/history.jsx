@@ -1,12 +1,14 @@
 import Header from '../components/header';
 import { useState, useEffect } from 'react';
 import supabase from '../supabaseClient';
+import { getRemoteSubmissions, pushRemoteSubmission } from '../submissions';
 
 const History = () => {
     const [userData, setUserData] = useState([]);
     const [user, setUser] = useState(null);
     const [submissions, setSubmissions] = useState([]);
 
+    // What is this?
     const endpoints = {
         root: `http://127.0.0.1:3060/`,
         profile_info: `http://127.0.0.1:3060/user?user=${user}`,
@@ -14,34 +16,24 @@ const History = () => {
         submission: `http://127.0.0.1:3060/user?user=${user}/submission`
       }
 
-    useEffect (() => {
-        (async () => {
-          const {data, error} = await supabase.auth.getSession();
-          const leetUser = data.session.user.user_metadata.leetcodeUser;
-          setUser(leetUser);
-        })();
-    }, []);
-
-    useEffect(() => {
-        chrome.storage.local.get(['submissions']).then((result) => {
-            console.log(result)
-            if (result.submissions)
-                setSubmissions(result.submissions);
+    useEffect (async () => {
+        const {data, error} = await supabase.auth.getSession();
+        const leetUser = data.session.user.user_metadata.leetcodeUser;
+        setUser(leetUser);
+        const userID = data.session.user.id;
+        const remoteSubmissions = await getRemoteSubmissions(userID);
+        chrome.storage.session.get(['userSubmissions']).then((result) => {
+        if (result.userSubmissions) {
+            result.userSubmissions.forEach(submission => {
+                pushRemoteSubmission(userID, submission);
+            });
+            setSubmissions([...remoteSubmissions, ...result.userSubmissions]);
+        } else {
+            setSubmissions(remoteSubmissions);
+        }
         });
+        chrome.storage.session.remove('userSubmissions');
     }, []);
-
-    // const fetchApi = (url) => {
-    //   useEffect (() => {
-        
-    //     fetch(url)
-    //       .then(res => res.json())
-    //       .then(data => setUserData(data))
-    //       .catch(err => console.error(`There was an error ${err}`));
-    //   }, [user]) // rerender on any change for now
-    // };
-    // fetchApi(endpoints.solved);
-    // console.log(userData)
-
 
     return (
         <div className="w-[600px] h-[300px] bg-customBG dark:bg-customDarkBG">
@@ -54,7 +46,7 @@ const History = () => {
             <div className="text-xl flex flex-col gap-3">
                 {submissions.map((submission, index) => (
                     <div key={index}>
-                        {submission.question} - {submission.timestamp}
+                        {submission.problem_name} 
                     </div>
                 ))}
             </div>
